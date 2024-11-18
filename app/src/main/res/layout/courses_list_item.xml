@@ -33,7 +33,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:contentDescription="Thumbnail image"
-        tools:src="@color/teal_200"/>
+        tools:src="@color/white"/>
 
     <!-- Title Text -->
     <TextView

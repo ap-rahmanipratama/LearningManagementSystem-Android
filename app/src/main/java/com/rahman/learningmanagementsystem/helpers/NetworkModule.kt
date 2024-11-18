@@ -20,13 +20,13 @@ object NetworkModule {
     @Singleton
     fun provideOkHttpClient(): OkHttpClient {
         val loggingInterceptor = HttpLoggingInterceptor()
-        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY  // Log full request and response body
 
         return OkHttpClient.Builder()
-            .addInterceptor(loggingInterceptor)
-            .connectTimeout(30, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
-            .writeTimeout(30, TimeUnit.SECONDS)
+            .addInterceptor(loggingInterceptor)  // Add the logging interceptor
+            .connectTimeout(30, TimeUnit.SECONDS)  // Optional: Add timeout if needed
+            .readTimeout(30, TimeUnit.SECONDS)    // Optional: Add timeout if needed
+            .writeTimeout(30, TimeUnit.SECONDS)   // Optional: Add timeout if needed
             .build()
     }
 
@@ -34,8 +34,8 @@ object NetworkModule {
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://quipper.github.io/native-technical-exam/") 
-            .client(okHttpClient)
+            .baseUrl("https://quipper.github.io/native-technical-exam/") // Base URL
+            .client(okHttpClient)  // Use OkHttp client with the interceptor
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
     }

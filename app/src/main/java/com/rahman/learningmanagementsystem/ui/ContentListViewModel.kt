@@ -1,5 +1,6 @@
 package com.rahman.learningmanagementsystem.ui
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -36,7 +37,7 @@ class ContentListViewModel @Inject constructor(
 
             val response = service.getListContent()
             val body = response.body()!!
-
+            Log.d("response", body.toString())
             _liveGetContentSuccess.value = EventData(content = body)
         }
     }

@@ -5,17 +5,17 @@ import com.squareup.moshi.Json
 data class ContentListResponse(
     val title: String,
 
-    @Json(name = "presenter_name")
+    @field:Json(name = "presenter_name")
     val presenterName: String,
 
     val description: String,
 
-    @Json(name = "thumbnail_url")
+    @field:Json(name = "thumbnail_url")
     val thumbnailURL: String,
 
-    @Json(name = "video_url")
+    @field:Json(name = "video_url")
     val videoURL: String,
 
-    @Json(name = "video_duration")
+    @field:Json(name = "video_duration")
     val videoDuration: Int
 )
