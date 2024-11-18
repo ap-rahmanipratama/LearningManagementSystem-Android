@@ -7,5 +7,18 @@
     <fragment
         android:id="@+id/contentListFragment"
         android:name="com.rahman.learningmanagementsystem.ui.contentlist.ContentListFragment"
-        android:label="ContentListFragment" />
+        android:label="ContentListFragment" >
+        <action
+            android:id="@+id/action_contentListFragment_to_contentDetailFragment"
+            app:destination="@id/contentDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/contentDetailFragment"
+        android:name="com.rahman.learningmanagementsystem.ui.contentdetail.ContentDetailFragment"
+        android:label="ContentDetailFragment" >
+    <argument
+        android:name="viewdata"
+        app:nullable="false"
+        app:argType="com.rahman.learningmanagementsystem.ui.viewdata.ContentViewData" />
+    </fragment>
 </navigation>

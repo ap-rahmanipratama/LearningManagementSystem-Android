@@ -1,5 +1,6 @@
 package com.rahman.learningmanagementsystem.client.dto
 
+import com.rahman.learningmanagementsystem.ui.viewdata.ContentViewData
 import com.squareup.moshi.Json
 
 data class ContentListResponse(
@@ -19,3 +20,20 @@ data class ContentListResponse(
     @field:Json(name = "video_duration")
     val videoDuration: Int
 )
+
+fun ContentListResponse.toContentViewData(): ContentViewData {
+    return ContentViewData(
+        title = this.title,
+        presenterName = this.presenterName,
+        description = this.description,
+        thumbnailURL = this.thumbnailURL,
+        videoURL = this.videoURL,
+        videoDuration = formatDuration(this.videoDuration)
+    )
+}
+
+fun formatDuration(duration: Int): String {
+    val minutes = duration / 1000 / 60
+    val remainingSeconds = duration / 1000 % 60
+    return String.format("%d:%02d", minutes, remainingSeconds)
+}

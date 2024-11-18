@@ -1,13 +1,16 @@
 package com.rahman.learningmanagementsystem.ui
 
 import android.util.Log
+import androidx.annotation.ContentView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rahman.learningmanagementsystem.client.dto.ContentListResponse
+import com.rahman.learningmanagementsystem.client.dto.toContentViewData
 import com.rahman.learningmanagementsystem.helpers.EventData
 import com.rahman.learningmanagementsystem.service.ContentService
+import com.rahman.learningmanagementsystem.ui.viewdata.ContentViewData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
@@ -20,7 +23,6 @@ class ContentListViewModel @Inject constructor(
     val liveError: MutableLiveData<EventData<String>> by lazy { MutableLiveData<EventData<String>>() }
 
     protected val exceptionHandler = CoroutineExceptionHandler { _, ex ->
-//        ApLog.e("Error: ${ex.message}")
         if ( ex.message?.isNotEmpty() == true ) {
             liveError.value = EventData(
                 message = ex.message!!
@@ -28,8 +30,8 @@ class ContentListViewModel @Inject constructor(
         }
     }
 
-    private val _liveGetContentSuccess: MutableLiveData<EventData<List<ContentListResponse>>> by lazy { MutableLiveData<EventData<List<ContentListResponse>>>() }
-    val liveGetContentSuccess: LiveData<EventData<List<ContentListResponse>>> get() = _liveGetContentSuccess
+    private val _liveGetContentSuccess: MutableLiveData<EventData<List<ContentViewData>>> by lazy { MutableLiveData<EventData<List<ContentViewData>>>() }
+    val liveGetContentSuccess: LiveData<EventData<List<ContentViewData>>> get() = _liveGetContentSuccess
 
 
     fun getList() {
@@ -37,8 +39,10 @@ class ContentListViewModel @Inject constructor(
 
             val response = service.getListContent()
             val body = response.body()!!
-            Log.d("response", body.toString())
-            _liveGetContentSuccess.value = EventData(content = body)
+
+            _liveGetContentSuccess.value = EventData(content = body.map { it.toContentViewData() })
         }
     }
+
+
 }

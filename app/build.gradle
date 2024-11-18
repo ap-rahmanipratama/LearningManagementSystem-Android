@@ -3,6 +3,8 @@ plugins {
     id 'org.jetbrains.kotlin.android' // Kotlin plugin for Android
     id 'kotlin-kapt' // Enables Kotlin annotation processing
     id 'com.google.dagger.hilt.android' // Hilt plugin for dependency injection
+    id 'androidx.navigation.safeargs.kotlin'
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -34,6 +36,7 @@ android {
     }
     buildFeatures {
         viewBinding true
+        dataBinding true
     }
 }
 

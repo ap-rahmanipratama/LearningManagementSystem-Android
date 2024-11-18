@@ -14,11 +14,12 @@ import com.bumptech.glide.request.RequestOptions
 import com.rahman.learningmanagementsystem.R
 import com.rahman.learningmanagementsystem.client.dto.ContentListResponse
 import com.rahman.learningmanagementsystem.databinding.CoursesListItemBinding
+import com.rahman.learningmanagementsystem.ui.viewdata.ContentViewData
 
 
 internal class CoursesListAdapter(private val context: Context): RecyclerView.Adapter<CoursesListAdapter.CoursesListViewHolder>() {
 
-    private val datas: ArrayList<ContentListResponse> = ArrayList<ContentListResponse>()
+    private val datas: ArrayList<ContentViewData> = ArrayList<ContentViewData>()
     private var onItemClickListener: OnItemClickListener? = null
 
     inner class CoursesListViewHolder(view: View): RecyclerView.ViewHolder(view) {
@@ -26,7 +27,11 @@ internal class CoursesListAdapter(private val context: Context): RecyclerView.Ad
     }
 
     interface OnItemClickListener {
-        fun onItemClick(view: View, item: ContentListResponse)
+        fun onItemClick(view: View, item: ContentViewData)
+    }
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        onItemClickListener = listener
     }
 
     override fun onCreateViewHolder(
@@ -42,7 +47,7 @@ internal class CoursesListAdapter(private val context: Context): RecyclerView.Ad
         holder.binding.author.text = data.presenterName
         holder.binding.title.text = data.title
         holder.binding.textDescription.text = data.description
-        holder.binding.textDuration.text = formatDuration(data.videoDuration)
+        holder.binding.textDuration.text = data.videoDuration
 
         Glide.with(context)
             .load(data.thumbnailURL)
@@ -54,21 +59,16 @@ internal class CoursesListAdapter(private val context: Context): RecyclerView.Ad
         }
     }
 
-    fun formatDuration(duration: Int): String {
-        val minutes = duration / 1000 / 60
-        val remainingSeconds = duration / 1000 % 60
-        return String.format("%d:%02d", minutes, remainingSeconds)
-    }
 
     override fun getItemCount(): Int = datas.size
 
-    fun reloadData(paramData: List<ContentListResponse>){
+    fun reloadData(paramData: List<ContentViewData>){
         datas.clear()
         datas.addAll(paramData)
         notifyDataSetChanged()
     }
 
-    fun reloadDataWithoutNotify(paramData: List<ContentListResponse>){
+    fun reloadDataWithoutNotify(paramData: List<ContentViewData>){
         datas.clear()
         datas.addAll(paramData)
     }
