@@ -2,6 +2,7 @@ package com.rahman.learningmanagementsystem.ui.contentdetail
 
 import android.net.Uri
 import android.widget.MediaController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.rahman.learningmanagementsystem.R
 import com.rahman.learningmanagementsystem.base.BaseFragment
@@ -20,12 +21,20 @@ class ContentDetailFragment: BaseFragment(R.layout.fragment_content_detail) {
         super.initComponent()
 
         val mediaController = MediaController(this.requireContext())
-        binding.videoView.setMediaController(mediaController)
+        mediaController.setAnchorView(binding.videoView)
         binding.videoView.setVideoURI(Uri.parse(args.viewdata.videoURL))
-
+        binding.videoView.setMediaController(mediaController)
         binding.author.text = args.viewdata.presenterName
         binding.title.text  = args.viewdata.title
         binding.textDescription.text = args.viewdata.description
         binding.textDuration.text = args.viewdata.videoDuration.toString()
+    }
+
+    override fun initEventListener() {
+        super.initEventListener()
+
+        binding.toolbar.onBackButtonClick {
+            findNavController().popBackStack()
+        }
     }
 }
