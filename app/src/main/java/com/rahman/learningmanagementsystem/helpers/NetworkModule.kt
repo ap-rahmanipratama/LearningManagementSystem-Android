@@ -5,6 +5,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -22,11 +23,25 @@ object NetworkModule {
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY  // Log full request and response body
 
+        val errorHandlingInterceptor = Interceptor { chain ->
+            val response = chain.proceed(chain.request())
+
+            // Check if the response is not successful (non-2xx status code)
+            if (!response.isSuccessful) {
+                val errorMessage = "Server Error: ${response.code}"
+                // You can also extract error details from the response body if needed
+                throw ServerFailedException(errorMessage) // Throw a custom exception or handle the error
+            }
+
+            return@Interceptor response
+        }
+
         return OkHttpClient.Builder()
-            .addInterceptor(loggingInterceptor)  // Add the logging interceptor
-            .connectTimeout(30, TimeUnit.SECONDS)  // Optional: Add timeout if needed
-            .readTimeout(30, TimeUnit.SECONDS)    // Optional: Add timeout if needed
-            .writeTimeout(30, TimeUnit.SECONDS)   // Optional: Add timeout if needed
+            .addInterceptor(loggingInterceptor)
+            .addInterceptor(errorHandlingInterceptor)
+            .connectTimeout(4, TimeUnit.SECONDS)
+            .readTimeout(4, TimeUnit.SECONDS)
+            .writeTimeout(4, TimeUnit.SECONDS)
             .build()
     }
 
@@ -34,8 +49,8 @@ object NetworkModule {
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://quipper.github.io/native-technical-exam/") // Base URL
-            .client(okHttpClient)  // Use OkHttp client with the interceptor
+            .baseUrl("https://quipper.github.io/native-technical-exam/")
+            .client(okHttpClient)
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
     }
