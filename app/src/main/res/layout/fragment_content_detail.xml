@@ -23,10 +23,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintDimensionRatio="16:9">
 
-        <VideoView
+        <androidx.media3.ui.PlayerView
             android:id="@+id/videoView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            app:use_controller="true" />
+
+        <ImageButton
+            android:id="@+id/exo_fullscreen_button"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="32dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="fullscreen"
+            android:layout_gravity="top|end"
+            android:src="@drawable/ic_full_screen"
+            app:tint="@color/white" />
     </FrameLayout>
 
     <TextView
